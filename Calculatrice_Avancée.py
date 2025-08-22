@@ -1,6 +1,8 @@
 import tkinter as tk
 from math import *
 
+historique_global = []
+
 # ==== FONCTION DE LA FENÊTRE D'ACCUEIL ====
 def accueil():
     root = tk.Tk()
@@ -29,12 +31,20 @@ def accueil():
     root.mainloop()
 
 
+def ajouter_historique(operation, resultat, zone_historique):
+    global historique_global
+    entree = f"{operation} = {resultat}"
+    historique_global.append(entree)
+
+    zone_historique.config(state="normal")
+    zone_historique.insert(tk.END, entree + "\n")
+    zone_historique.config(state="disabled")
+
 # ==== FONCTIONS CALCULATRICES ====
 def calculatrice_simple():
     fenetre = tk.Tk()
     fenetre.title("Calculatrice Simple")
-    fenetre.geometry("300x400")
-    
+    fenetre.geometry("300x500")
 
     # Zone d'affichage
     entree = tk.Entry(fenetre, width=20, font=("Arial", 18), borderwidth=5, relief="ridge")
@@ -50,9 +60,11 @@ def calculatrice_simple():
 
     def calculer():
         try:
-            res = eval(entree.get())
+            operation = entree.get()
+            res = eval(operation)
             entree.delete(0, tk.END)
             entree.insert(tk.END, res)
+            ajouter_historique(operation, res, historique)
         except:
             entree.delete(0, tk.END)
             entree.insert(tk.END, "Erreur")
@@ -78,6 +90,15 @@ def calculatrice_simple():
     tk.Button(fenetre, text="Retour au menu", width=20, height=2, command=lambda: [fenetre.destroy(), accueil()])\
         .grid(row=6, column=0, columnspan=4)
 
+    # Zone d'historique
+    historique = tk.Text(fenetre, width=30, height=5, state="disabled", font=("Arial", 12))
+    historique.grid(row=7, column=0, columnspan=4, pady=5)
+    
+    for ligne in historique_global:
+        historique.config(state="normal")
+        historique.insert(tk.END, ligne + "\n")
+        historique.config(state="disabled")
+
     fenetre.mainloop()
 
 
@@ -98,9 +119,11 @@ def calculatrice_avancee():
 
     def calculer():
         try:
-            res = eval(entree.get())
+            operation = entree.get()
+            res = eval(operation)
             entree.delete(0, tk.END)
             entree.insert(tk.END, res)
+            ajouter_historique(operation, res, historique)
         except Exception:
             entree.delete(0, tk.END)
             entree.insert(tk.END, "Erreur")
@@ -172,6 +195,15 @@ def calculatrice_avancee():
         .grid(row=5, column=0, columnspan=3, padx=5, pady=5)
     tk.Button(fen, text="Retour au menu", width=20, height=2, command=lambda: [fen.destroy(), accueil()])\
         .grid(row=6, column=1, columnspan=4)
+    
+    # Zone d'historique
+    historique = tk.Text(fen, width=30, height=5, state="disabled", font=("Arial", 12))
+    historique.grid(row=7, column=0, columnspan=4, pady=5)
+
+    for ligne in historique_global:
+        historique.config(state="normal")
+        historique.insert(tk.END, ligne + "\n")
+        historique.config(state="disabled")
 
     fen.mainloop()
 
@@ -192,9 +224,11 @@ def calculatrice_trigo():
 
     def calculer():
         try:
-            res = eval(entree.get())
+            operation = entree.get()
+            res = eval(operation)
             entree.delete(0, tk.END)
             entree.insert(tk.END, res)
+            ajouter_historique(operation, res, historique)
         except:
             entree.delete(0, tk.END)
             entree.insert(tk.END, "Erreur")
@@ -217,6 +251,15 @@ def calculatrice_trigo():
         .grid(row=5, column=0, columnspan=2, padx=5, pady=5)
     tk.Button(fen, text="Retour au menu", width=20, height=2, command=lambda: [fen.destroy(), accueil()])\
         .grid(row=6, column=0, columnspan=3)
+
+    # Zone d'historique
+    historique = tk.Text(fen, width=30, height=5, state="disabled", font=("Arial", 12))
+    historique.grid(row=1, column=0, columnspan=4, pady=5)
+
+    for ligne in historique_global:
+        historique.config(state="normal")
+        historique.insert(tk.END, ligne + "\n")
+        historique.config(state="disabled")
 
     fen.mainloop()
 
